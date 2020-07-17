@@ -1,4 +1,5 @@
 import React from 'react'
+
 import './index.css'
 export const Searcher = ({handleChangeCity, handleChangeCountry, handleSubmit}) => {
     return(

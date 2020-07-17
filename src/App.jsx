@@ -1,6 +1,13 @@
-import React from 'react'
+import React from 'react';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route
+} from 'react-router-dom'
 import {Weather} from './components/LandingComponent/weather.component'
-import {Searcher} from './components/Searcher/Searcher'
+import {Searcher} from './components/Searcher/Searcher';
+import {FilterWeather} from './components/FilterWeather/FilterWeather'
+import CardCountry from './components/CardCountry/CardCountry'
 import 'weather-icons/css/weather-icons.css'
 
 //api.openweathermap.org/data/2.5/weather?q=
@@ -20,9 +27,14 @@ class App extends React.Component {
             temp_min: '',
             temp_max: '',
             description: '',
+            icon: ''
         },
         loading: false,
-        error: false
+        error: false,
+        filter: {
+            condition: false,
+            code: ''
+        }
 
     }
     
@@ -41,7 +53,8 @@ class App extends React.Component {
                     temp: this.calCelsius(data.main.temp),
                     temp_min: this.calCelsius(data.main.temp_min),
                     temp_max: this.calCelsius(data.main.temp_max),
-                    description: data.weather[0].description 
+                    description: data.weather[0].description, 
+                    icon: data.weather[0].icon 
                 }, 
                 loading: false,
                 error: false 
@@ -75,10 +88,15 @@ class App extends React.Component {
                     temp: this.calCelsius(data.main.temp),
                     temp_min: this.calCelsius(data.main.temp_min),
                     temp_max: this.calCelsius(data.main.temp_max),
-                    description: data.weather[0].description
+                    description: data.weather[0].description,
+                    icon: data.weather[0].icon
                 }, 
                 loading: false,
-                error: false
+                error: false,
+                filter: {
+                    condition: false,
+                    code: ''
+                }
             })
             
         })
@@ -111,15 +129,25 @@ class App extends React.Component {
         })
 
     }
-    
+
+    handleClickButtonSort = (e) =>{
+        this.setState({
+            filter: {
+                condition: true,
+                code: e.target.name
+            }
+        })
+    }
+     
     render(){
         return(
             <>
                 <Searcher handleChangeCity={this.handleChangeCity} handleChangeCountry={this.handleChangeCountry} handleSubmit={this.handleSubmit}/>
-                {this.state.loading || this.state.error
-                    ? this.state.loading ? 'loading...' : 'error 123213'
-                    : <Weather {...this.state.countryData} />
-                }
+                <FilterWeather handleClickButtonSort={this.handleClickButtonSort} />              
+                    {this.state.loading || this.state.error
+                        ? this.state.loading ? 'loading...' : 'error 123213'
+                        : this.state.filter.condition ? <CardCountry continentCode={this.state.filter.code} /> : <Weather {...this.state.countryData} /> 
+                    }
             </>
         )
     }

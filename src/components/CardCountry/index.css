@@ -1,0 +1,11 @@
+.card-body{
+    color: black;
+}
+.cards-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.cards-container .button-loadMore{
+    width: 18%;
+}
