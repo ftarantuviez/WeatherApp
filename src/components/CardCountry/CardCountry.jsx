@@ -3,22 +3,24 @@ import './index.css'
 
 class CardCountry extends React.Component{
     
-    state = {
-        dataFetched: [],
-        loading: true,
-        error: false,
-        loadMoreLoading: false
-        
+    constructor(props){
+        super(props)
+        this.limitNumber = 10;
+        this.state = {
+            dataFetched: [],
+            loading: true,
+            error: false,
+            loadMoreLoading: false,
+            provincesOrStates: false
+        }
     }
 
     
-    fetchData = async (limitProp) => {
-        let limitNumber = limitProp;
-        if(this.state.loadMoreLoading !== true){
-            this.setState({
-                ...this.state,
-                loading: true
-            })
+    fetchData = async (loadButton) => {
+        if(loadButton){
+            this.setState({...this.state, loadMoreLoading: true})
+        } else{
+            this.setState({...this.state, loading: true})
         }
         const where = encodeURIComponent(JSON.stringify({
           "continent": {
@@ -28,7 +30,7 @@ class CardCountry extends React.Component{
           }
         }));
         const response = await fetch(
-          `https://parseapi.back4app.com/classes/Country?limit=${limitNumber}&include=continent&excludeKeys=phone&where=${where}`,
+          `https://parseapi.back4app.com/classes/Country?limit=${this.limitNumber}&include=continent&excludeKeys=phone&where=${where}`,
           {
             headers: {
               'X-Parse-Application-Id': 'mxsebv4KoWIGkRntXwyzg6c6DhKWQuit8Ry9sHja', // This is the fake app's application id
@@ -41,28 +43,20 @@ class CardCountry extends React.Component{
       }
 
     componentDidMount(){
-        this.fetchData(10)
+        this.fetchData()
     }
 
     componentDidUpdate(prevProps){
         if(prevProps.continentCode !== this.props.continentCode){
-            this.fetchData(10)
-        }
+            this.limitNumber = 10;
+            this.fetchData()
+        }    
     }
+    
 
     handleClickLoadMore = () =>{
-        new Promise((done, fail) => {
-            if(done){
-                this.setState({
-                    loading: false,
-                    loadMoreLoading: true
-                })
-            } 
-        })
-        .then(() => {
-            this.fetchData(20)
-        })
-
+        this.limitNumber += 10;
+        this.fetchData(true)
     }
     
     render(){
@@ -73,11 +67,12 @@ class CardCountry extends React.Component{
         ? 'loading' 
         :<>
         <div className="container cards-container">
+            <h4 className="m-3">Continent: {this.props.continentName} </h4>
             <div className="row justify-content-center">
                 {this.state.dataFetched.map(card =>(
                         <div key={card.objectId} className="card col-3 m-3" style={{width: "18rem"}} >
                             <div className="card-body">
-                                <h5 className="card-title">{card.name}, {card.code} <span> 😍</span></h5>
+                                <h5 className="card-title">{card.name}, {card.code} | <span role="img">{card.emoji}</span></h5>
                                 <h6 className="card-title">Capital: {card.capital}</h6>
                                 <p className="card-text">Continent: {card.continent.name}, {card.continent.code}</p>
                                 <button onClick={() => console.log(card.objectId)} className="btn btn-primary">Go somewhere</button>

@@ -1,16 +1,11 @@
 import React from 'react';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route
-} from 'react-router-dom'
 import {Weather} from './components/LandingComponent/weather.component'
 import {Searcher} from './components/Searcher/Searcher';
 import {FilterWeather} from './components/FilterWeather/FilterWeather'
 import CardCountry from './components/CardCountry/CardCountry'
 import 'weather-icons/css/weather-icons.css'
 
-//api.openweathermap.org/data/2.5/weather?q=
+
 const API_key = "1650a6d758f7faf28488e5c529dcf0c4";
 
 class App extends React.Component {
@@ -33,7 +28,8 @@ class App extends React.Component {
         error: false,
         filter: {
             condition: false,
-            code: ''
+            code: '',
+            nameContinent: ''
         }
 
     }
@@ -134,7 +130,8 @@ class App extends React.Component {
         this.setState({
             filter: {
                 condition: true,
-                code: e.target.name
+                code: e.target.name,
+                nameContinent: e.target.id
             }
         })
     }
@@ -146,7 +143,7 @@ class App extends React.Component {
                 <FilterWeather handleClickButtonSort={this.handleClickButtonSort} />              
                     {this.state.loading || this.state.error
                         ? this.state.loading ? 'loading...' : 'error 123213'
-                        : this.state.filter.condition ? <CardCountry continentCode={this.state.filter.code} /> : <Weather {...this.state.countryData} /> 
+                        : this.state.filter.condition ? <CardCountry continentCode={this.state.filter.code} continentName={this.state.filter.nameContinent} /> : <Weather {...this.state.countryData} /> 
                     }
             </>
         )
