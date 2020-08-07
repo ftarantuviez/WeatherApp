@@ -4,6 +4,7 @@ import {Searcher} from './components/Searcher/Searcher';
 import {FilterWeather} from './components/FilterWeather/FilterWeather'
 import CardCountry from './components/CardCountry/CardCountry'
 import 'weather-icons/css/weather-icons.css'
+import Loader from './components/Loader'
 
 
 const API_key = "1650a6d758f7faf28488e5c529dcf0c4";
@@ -135,14 +136,14 @@ class App extends React.Component {
             }
         })
     }
-     
+
     render(){
         return(
             <>
                 <Searcher handleChangeCity={this.handleChangeCity} handleChangeCountry={this.handleChangeCountry} handleSubmit={this.handleSubmit}/>
                 <FilterWeather handleClickButtonSort={this.handleClickButtonSort} />              
                     {this.state.loading || this.state.error
-                        ? this.state.loading ? 'loading...' : 'error 123213'
+                        ? this.state.loading ? <Loader /> : 'error 123213'
                         : this.state.filter.condition ? <CardCountry continentCode={this.state.filter.code} continentName={this.state.filter.nameContinent} /> : <Weather {...this.state.countryData} /> 
                     }
             </>

@@ -1,5 +1,6 @@
 import React from 'react'
 import './index.css'
+import Loader from  '../Loader'
 
 class CardCountry extends React.Component{
     
@@ -64,24 +65,23 @@ class CardCountry extends React.Component{
     return(
         <>
         {this.state.loading
-        ? 'loading' 
+        ? <Loader /> 
         :<>
         <div className="container cards-container">
             <h4 className="m-3">Continent: {this.props.continentName} </h4>
-            <div className="row justify-content-center">
+            <div className="row justify-content-center p-3">
                 {this.state.dataFetched.map(card =>(
-                        <div key={card.objectId} className="card col-3 m-3" style={{width: "18rem"}} >
+                        <div key={card.objectId} className="card col-12 col-md-6 col-lg-3 m-3"  >
                             <div className="card-body">
                                 <h5 className="card-title">{card.name}, {card.code} | <span role="img">{card.emoji}</span></h5>
                                 <h6 className="card-title">Capital: {card.capital}</h6>
                                 <p className="card-text">Continent: {card.continent.name}, {card.continent.code}</p>
-                                <button onClick={() => console.log(card.objectId)} className="btn btn-primary">Go somewhere</button>
                             </div>
                         </div>
                 ))}
             </div>
             {this.state.loadMoreLoading
-            ? 'loadingAAAAAAAA'
+            ? <Loader />
             : <button onClick={this.handleClickLoadMore} className="btn btn-secondary button-loadMore">Load more</button>
             }
          </div>

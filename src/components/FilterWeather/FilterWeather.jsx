@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import './index.css'
 export const FilterWeather = ({handleClickButtonSort}) =>{
     return(
-        <div className="container pt-4 d-flex justify-content-center">
+        <div className="container pt-4 d-flex justify-content-center" style={{flexWrap: 'wrap'}}>
             <button id="South America" name="ISPUD93Or8" onClick={handleClickButtonSort} className="btn mr-3 btn-dark buttons">South America</button>
             <button name="vZNZcahFvu" onClick={handleClickButtonSort} className="btn mr-3 btn-dark buttons" id="North America">North America</button>
             <button name="28HX8qDZHw" onClick={handleClickButtonSort} className="btn mr-3 btn-dark buttons" id="Europa">Europa</button>
